@@ -133,7 +133,7 @@ def book_details(request, pk):
                 issue_date = issued_books_student.issue_period
                 time_left = datetime.timedelta(days = 14) - (datetime.datetime.now().date() - issue_date.date())
             
-                diction.update({'book_issued': True, 'time_left': time_left})
+                diction.update({'book_issued': True, 'time_left': time_left, 'issue_details': issued_books_student})
 
         except:
             diction.update({'book_issued': False})        
@@ -174,5 +174,10 @@ def search(request):
 def genre_books(request, pk):
     genre = Genre.objects.get(pk=pk)
 
-    return render(request, 'books/genre.html', context = {'genre': genre})    
+    return render(request, 'books/genre.html', context = {'genre': genre})  
+
+def return_book(request, pk):
+    IssuedBooks.objects.get(pk=pk).delete()
+
+    return render(request, 'books/return_book.html', context={})      
 

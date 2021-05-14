@@ -13,4 +13,5 @@ urlpatterns = [
     path('renew-book/<pk>/', views.renew_book, name = 'renew_book'),
     path('search/', views.search, name = 'search'),
     path('genre-books/<pk>/', views.genre_books, name = 'genre_books'),
+    path('return-book/<pk>/', views.return_book, name = 'return_book'),
 ]
