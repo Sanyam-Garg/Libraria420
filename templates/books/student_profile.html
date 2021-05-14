@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1> My issues books</h1>
+    <hr>
+    {% for book in issued_books %}
+        <h3><a href = "{% url 'book_details' pk=book.book.id %}">{{book.book.title}} : {{book.book.author}}</h3>
+    {% endfor %}
+{% endblock content %}

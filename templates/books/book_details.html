@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+    <h3> {{book.title}}</h3>
+    <hr>
+    <img src = "{{book.cover.url}}" height = "500px" width = "500px">
+    <h4> Author: {{book.author}}</h4>
+    <h4> Publisher: {{book.published_by}}</h4>
+    <hr>
+
+    {% if book_issued and user.is_authenticated %}
+    <span> You have issued this book <span>
+    {% elif user.is_authenticated %}
+    <a href = "{% url 'issue_book' pk=book.id %}" class = "btn btn-info">Issue</a>
+    <form method = 'POST'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type = "submit" name = "submit" value = "Submit" class = "btn btn-info">
+    </form>
+    {% else %}
+    <h3><a href = "{% url 'student_login' %}"> Login to issue </a></h3>
+    {% endif %}
+
+    <hr>
+    <hr>
+
+    <h1>Reviews:</h1>
+    {% for review in reviews %}
+        <h2>{{review.title}}<h2>
+        <p>{{review.description}}</p>
+        <hr>
+    {% endfor %}
+    
+    
+{% endblock content %}
