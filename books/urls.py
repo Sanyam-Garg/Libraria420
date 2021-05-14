@@ -9,6 +9,7 @@ urlpatterns = [
     path('student-profile/', views.student_profile, name = 'student_profile'),
     path('student-logout/', views.student_logout, name = 'student_logout'),
     path('book-details/<pk>/', views.book_details, name = 'book_details'),
-    path('issue-book/<pk>', views.issue_book, name = 'issue_book'),
-    path('renew-book/<pk>', views.renew_book, name = 'renew_book'),
+    path('issue-book/<pk>/', views.issue_book, name = 'issue_book'),
+    path('renew-book/<pk>/', views.renew_book, name = 'renew_book'),
+    path('search/', views.search, name = 'search'),
 ]

@@ -1,10 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
-
 <html lang = "en" dir = "ltr">
     <head>
         <meta charset = "utf-8">
             <title>{{ title }}</title>
+            <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <link rel = "stylesheet" href = "{% static 'styles/main.css' %}">
+
     </head>
 
     <body>
@@ -37,6 +40,17 @@
         <a class="nav-link" href="{% url 'student_login' %}">Student Login </a>
       </li>
       {% endif %}
+
+      <form method="get" action="{% url 'search' %}">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="text" class="input" placeholder="Search here" name="query">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-dark is-uppercase">Search</button>
+                                </div>
+                            </div>
+                        </form>
       
       
       

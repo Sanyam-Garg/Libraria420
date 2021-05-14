@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Book, Review, Student, IssuedBooks
 from . import forms
+from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -164,4 +165,9 @@ def renew_book(request, pk):
 
     return render(request, 'books/renew_book.html', context = {})
 
+def search(request):
+    query = request.GET.get('query', '')
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+
+    return render(request, 'books/search.html', context = {'books': books, 'query': query})
 
