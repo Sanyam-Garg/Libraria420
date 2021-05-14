@@ -41,6 +41,10 @@
       </li>
       {% endif %}
 
+      {% for genre in genres %}
+                      <a href = "{% url 'genre_books' pk=genre.pk %}" class = "nav-link">{{ genre.genre }}</a>
+                    {% endfor %}
+
       <form method="get" action="{% url 'search' %}">
                             <div class="field has-addons">
                                 <div class="control">
@@ -51,9 +55,6 @@
                                 </div>
                             </div>
                         </form>
-      
-      
-      
       
     </ul>
   

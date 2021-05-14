@@ -2,11 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+class Genre(models.Model):
+    genre = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.genre
+    
+
 class Book(models.Model):
     title = models.CharField(max_length=50)
     author = models.CharField(max_length=50)
     published_by = models.CharField(max_length=50)
     cover = models.ImageField(upload_to = 'covers', blank = True, null = True)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='books')
 
     def __str__(self):
         return self.title

@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Book, Review, Student, IssuedBooks
+from .models import Book, Genre, Review, Student, IssuedBooks
 from . import forms
 from django.db.models import Q
 
@@ -170,4 +170,9 @@ def search(request):
     books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
 
     return render(request, 'books/search.html', context = {'books': books, 'query': query})
+
+def genre_books(request, pk):
+    genre = Genre.objects.get(pk=pk)
+
+    return render(request, 'books/genre.html', context = {'genre': genre})    
 
