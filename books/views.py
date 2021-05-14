@@ -149,25 +149,6 @@ def book_details(request, pk):
 
             return redirect('index')
 
-       
-
-    # if request.user.is_authenticated:
-    #     student = request.user
-    #     issued_books = IssuedBooks.objects.filter(student_id = student.id)
-
-    #     if book in issued_books:
-    #         return HttpResponse('You have already issued this book.')
-
-    # user = request.user
-    # issue_date = user.student_issue.issue_period.date()
-    # diction.update({
-    #     'issue_date':issue_date,
-    # })
-    
-          
-    # if request.method == 'POST':
-    #     IssuedBooks.objects.create(student_id = request.user.id, book_id = book.id)
-
 
     return render(request, 'books/book_details.html', context = diction)
 
@@ -175,5 +156,12 @@ def issue_book(request, pk):
     IssuedBooks.objects.create(student = request.user, book = Book.objects.get(pk = pk), issue_period = datetime.datetime.now())
 
     return render(request, 'books/issue_book.html', context = {})
+
+def renew_book(request, pk):
+    IssuedBooks.objects.get(student = request.user, book = Book.objects.get(pk=pk)).delete()
+    
+    IssuedBooks.objects.create(student = request.user, book = Book.objects.get(pk=pk), issue_period = datetime.datetime.now())
+
+    return render(request, 'books/renew_book.html', context = {})
 
 

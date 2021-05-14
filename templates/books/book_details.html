@@ -11,7 +11,7 @@
 
     {% if book_issued and user.is_authenticated %}
     <span> You have issued this book. Time left {{time_left}} <span>
-    <a href = '#' class = 'btn btn-info'>Renew</a>
+    <a href = "{% url 'renew_book' pk=book.pk %}" class = 'btn btn-info'>Renew</a>
     <hr>
     <form method = 'POST'>
     {% csrf_token %}
