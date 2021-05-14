@@ -30,7 +30,7 @@ class Student(models.Model):
 class IssuedBooks(models.Model):
     student = models.ForeignKey(User, on_delete = models.CASCADE, related_name='student_issue')
     book = models.ForeignKey(Book, on_delete = models.CASCADE)
-    issue_period = models.DateTimeField(auto_now = True)
+    issue_period = models.DateTimeField(auto_now_add = False, blank = True, null=True)
 
     def __str__(self):
         return self.student.username

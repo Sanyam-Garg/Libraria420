@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from datetime import date
+import datetime
 
 # Create your views here.
 def index(request):
@@ -125,12 +125,17 @@ def book_details(request, pk):
     }
 
     if request.user.is_authenticated:
-        issued_books_student = IssuedBooks.objects.filter(student = request.user, book = book) # Gets all the rows of books issued by the student
+        try:
+            issued_books_student = IssuedBooks.objects.get(student = request.user, book = book) # Gets all the rows of books issued by the student
 
-        if issued_books_student:
-            # issue_date = issued_books_student.issue_period
-            # print(issue_date)
-            diction.update({'book_issued': True})
+            if issued_books_student:
+                issue_date = issued_books_student.issue_period
+                time_left = datetime.timedelta(days = 14) - (datetime.datetime.now().date() - issue_date.date())
+            
+                diction.update({'book_issued': True, 'time_left': time_left})
+
+        except:
+            diction.update({'book_issued': False})        
 
     if request.method == 'POST':
         form = forms.ReviewForm(request.POST)
@@ -167,7 +172,7 @@ def book_details(request, pk):
     return render(request, 'books/book_details.html', context = diction)
 
 def issue_book(request, pk):
-    IssuedBooks.objects.create(student = request.user, book = Book.objects.get(pk = pk))
+    IssuedBooks.objects.create(student = request.user, book = Book.objects.get(pk = pk), issue_period = datetime.datetime.now())
 
     return render(request, 'books/issue_book.html', context = {})
 
