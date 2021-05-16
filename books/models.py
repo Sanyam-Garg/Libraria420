@@ -13,7 +13,6 @@ class Book(models.Model):
     title = models.CharField(max_length=50)
     author = models.CharField(max_length=50)
     published_by = models.CharField(max_length=50)
-    cover = models.ImageField(upload_to = 'covers', blank = True, null = True)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='books')
 
     def __str__(self):
@@ -21,14 +20,13 @@ class Book(models.Model):
 
 class Student(models.Model):
     user = models.OneToOneField(User, related_name = 'student_user', on_delete = models.CASCADE)
-    profile_pic = models.ImageField(upload_to = 'profile_pics', blank = True, null = True)
 
     batches = (
         (2020, '2020'),
         (2019, '2019'),
         (2018, '2018'),
         (2017, '2017'),
-        (2016, '2016')
+        (2016, '2016'),
     )
     batch = models.IntegerField(choices = batches)
 

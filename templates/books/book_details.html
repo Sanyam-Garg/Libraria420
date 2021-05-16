@@ -2,19 +2,20 @@
 
 {% block content %}
 <br>
-    <h3> {{book.title}}</h3>
-    <hr>
-    <figure class="image is-4by3 mb-6">
-            <img src="{{ book.cover.url }}">
-        </figure>
+    
 
-    <h1 class="title">{{ book.title }}, {{ book.author }}</h1>    
+    <h1 class="title">{{ book.title }}</h1> 
+    <h3> {{book.author}}</h3>
+    <hr>   
 
     {% if book_issued and user.is_authenticated %}
-    <span> You have issued this book. Time left {{time_left}} <span>
+    <div class = "alert alert-success">
+        You have issued this book. Time left {{time_left}}
+    </div> 
     <br>
     <a href = "{% url 'return_book' pk=issue_details.pk %}" class = 'button is-dark is-uppercase'>Return</a>
     <a href = "{% url 'renew_book' pk=book.pk %}" class = 'button is-dark is-uppercase'>Renew</a>
+    <hr>
     <form method = 'POST'>
     {% csrf_token %}
     {{form.as_p}}

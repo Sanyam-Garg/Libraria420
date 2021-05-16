@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br>
+<a href = "{% url 'staff_reg' %}" class="btn btn-outline-dark">Add a Staff account</a>
     {% for user in users %}
         <div class="column is-3 product-list-item">
                 <div class="box">

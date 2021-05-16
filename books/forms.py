@@ -16,7 +16,7 @@ class StudentUser(forms.ModelForm):
 class Student(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ('batch', 'profile_pic')
+        fields = ('batch',)
 
 class ReviewForm(forms.ModelForm):
     class Meta:

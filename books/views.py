@@ -28,14 +28,10 @@ def add_book(request):
             form = forms.BookForm(request.POST)
         
             if form.is_valid():
-                book = form.save(commit = False)
+                book = form.save(commit = True)
 
-                if 'cover' in request.FILES:
-                    book.cover = request.FILES['cover']
-
-                    book.save()
-
-                    return redirect('index')
+                
+                return redirect('index')
 
         else:
             form = forms.BookForm()            
@@ -62,12 +58,10 @@ def student_reg(request):
 
             student_info_data = student_info.save(commit = False)
             student_info_data.user = student_user
-            if 'profile_pic' in request.FILES:
-                student_info_data.profile_pic = request.FILES['profile_pic']
 
-                student_info_data.save()
+            student_info_data.save()
 
-                registered = True
+            registered = True
 
     else:
         student = forms.StudentUser()
@@ -233,14 +227,9 @@ def update_book(request, pk):
         form = forms.BookForm(request.POST, instance=book)
 
         if form.is_valid:
-            updated_book = form.save(commit=False)
+            updated_book = form.save(commit=True)
 
-            if 'cover' in request.FILES:
-                updated_book.cover = request.FILES['cover']
-
-                updated_book.save()
-
-                return redirect('index')
+            return redirect('index')
     else:
         form = forms.BookForm(instance=book) 
 
