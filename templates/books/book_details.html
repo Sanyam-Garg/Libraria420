@@ -27,14 +27,19 @@
     {% csrf_token %}
     {{form.as_p}}
     <div class = "control">
-             <button class = "button is-dark is-uppercase">Login</button>
+             <button class = "button is-dark is-uppercase">Submit</button>
           </div>
     </form>
+    <br>
     {% else %}
     <div class = "control">
              <a href = "{% url 'student_login' %}"><button class = "button is-dark is-uppercase">Login</button></a>
           </div>
-    
+    <br>
+    {% endif %}
+
+    {% if is_staff %}
+        <a href = "{% url 'update_book' pk=book.pk %}"><button class = "button is-dark is-uppercase">Update Book</button></a>
     {% endif %}
 
     <hr>

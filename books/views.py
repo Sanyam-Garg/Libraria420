@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 import datetime
 
@@ -22,26 +22,30 @@ def index(request):
 
 def add_book(request):
 
-    if request.method == 'POST':
-        form = forms.BookForm(request.POST)
+    if request.user.is_staff:
+
+        if request.method == 'POST':
+            form = forms.BookForm(request.POST)
         
-        if form.is_valid():
-            book = form.save(commit = False)
+            if form.is_valid():
+                book = form.save(commit = False)
 
-            if 'cover' in request.FILES:
-                book.cover = request.FILES['cover']
+                if 'cover' in request.FILES:
+                    book.cover = request.FILES['cover']
 
-                book.save()
+                    book.save()
 
-                return redirect('index')
+                    return redirect('index')
 
+        else:
+            form = forms.BookForm()            
+
+        diction = {
+            'form': form,
+        }
+        return render(request, 'books/add_book.html', context = diction)
     else:
-        form = forms.BookForm()            
-
-    diction = {
-        'form': form,
-    }
-    return render(request, 'books/add_book.html', context = diction)
+        return HttpResponse('Only accessible to staff')    
 
 def student_reg(request):
 
@@ -98,8 +102,17 @@ def student_login(request):
 
 @login_required
 def student_profile(request):
+    if request.user.is_superuser:
+        users = User.objects.filter(is_superuser = False).all()
+
+        diction = {
+            'users': users,
+        }
+        return render(request, 'books/superuser_profile.html', context=diction)
+
     issued_books = IssuedBooks.objects.filter(student_id = request.user.id).all()
 
+    
     diction = {
         'issued_books': issued_books,
     }
@@ -117,12 +130,17 @@ def book_details(request, pk):
     form = forms.ReviewForm()
     reviews = Review.objects.filter(book = book)
     book_issued = False
+    is_staff = False
+
+    if request.user.is_staff:
+        is_staff = True
 
     diction = {
         'book': book,
         'form': form, 
         'reviews': reviews,
-        'book_issued': book_issued
+        'book_issued': book_issued,
+        'is_staff': is_staff,
     }
 
     if request.user.is_authenticated:
@@ -181,3 +199,54 @@ def return_book(request, pk):
 
     return render(request, 'books/return_book.html', context={})      
 
+def staff_reg(request):
+    if request.user.is_superuser:
+        form = forms.StudentUser()
+        diction = {
+            'form': form,
+        }
+
+        if request.method == 'POST':
+            form = forms.StudentUser(request.POST)
+
+            if form.is_valid:
+                staff = form.save(commit=False)
+                staff.set_password(staff.password)
+                staff.is_staff = True
+                staff.save()
+
+                return redirect('index')
+
+        return render(request, 'books/staff_reg.html', context=diction)
+    else:
+        return HttpResponse('Only accessible by superuser')    
+    
+def delete_user(request, pk):
+    User.objects.get(pk=pk).delete()
+
+    return HttpResponse('User deleted successfully')
+
+def update_book(request, pk):
+    book = Book.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = forms.BookForm(request.POST, instance=book)
+
+        if form.is_valid:
+            updated_book = form.save(commit=False)
+
+            if 'cover' in request.FILES:
+                updated_book.cover = request.FILES['cover']
+
+                updated_book.save()
+
+                return redirect('index')
+    else:
+        form = forms.BookForm(instance=book) 
+
+    diction = {
+        'form': form,
+    }               
+
+
+    return render(request, 'books/update_book.html', context=diction)

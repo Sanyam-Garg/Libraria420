@@ -2,9 +2,10 @@
 
 {% block content %}
 
-    <h1> My issues books</h1>
+    <h1> My issued books</h1>
     <hr>
     {% for book in issued_books %}
-        <h3><a href = "{% url 'book_details' pk=book.book.id %}">{{book.book.title}} : {{book.book.author}}</h3>
+    <a href = "{% url 'book_details' pk=book.book.id %}"><h3 class="title"><span class="tag is-dark">{{ book.book.title }} | {{book.book.author}}</span></h3></a>
+        
     {% endfor %}
 {% endblock content %}

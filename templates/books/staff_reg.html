@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method = 'POST'>
+        {{form.as_p}}
+        {% csrf_token %}
+        <input type = "submit" name = "submit" value = "Register" class = "btn btn-primary btn-sm">
+    </form>
+{% endblock content %}
